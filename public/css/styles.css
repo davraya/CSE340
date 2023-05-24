@@ -4,3 +4,200 @@
 *:after {
   box-sizing: border-box;
 }
+
+body{
+  background-image: url("../images/site/small_check.jpg");
+}
+
+li{
+  list-style-type: none;
+  margin: 10px;
+}
+
+#wrapper{
+  width: 80%;
+  background-color: #fff;
+  opacity: 1;
+  text-align: center;
+  margin: auto;
+  border-style: solid;
+  border-color: rgb(38, 194, 194);
+  border-radius: 10px;
+}
+
+
+/******************HEADER *************************/
+
+#top-header{  /* id is # */
+  display: flex;
+  justify-content: space-between;
+}
+
+#siteName{
+  padding: 20px;
+  text-decoration: none;
+  font-size: 30px;
+}
+
+#tools{
+  padding: 10px;
+  text-decoration: none;
+}
+
+/******************NAVIGATION**************************/
+
+/* #nav-header{
+  display: flex;
+  justify-content: space-between;
+} */
+
+#ul-header{
+  display: flex;
+  list-style: none;
+  justify-content : space-between;
+  background-color: black;
+}
+
+.li-header{
+  margin: 6px;
+  color: white;
+  background-color: black ;
+
+}
+
+/******************* BODY ********************/
+#delorean-home-image{
+  width : 80%;
+}
+
+#home-div-delorean{
+  position: relative;
+}
+
+#welcome-message{
+  text-align: left;
+  padding-left: 25px;
+  font-size : 20px;
+}
+/* *************Floating thing *******************/
+
+#delorean-des{
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  background-color: rgba(255, 255, 255, 0.907);
+}
+
+.p-features{
+  font-size: 8px;
+  color: rgb(38, 194, 194);
+}
+
+#dmc-delorean-title{
+  margin: 5px;
+  color: rgb(38, 194, 194);
+}
+
+#own-button{
+  background-color: rgb(38, 194, 194);
+  padding: 5px;
+}
+
+/**************** Bottom ***********************/
+
+#delorean-specs{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+
+}
+
+#delorean-upgrades{
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+#delorean-upgrades-h2{
+  grid-column: 1 / span 2;
+}
+
+#flux-div{
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
+
+#flame-div{
+  grid-row: 2;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+#bumper-div{
+  grid-row: 3;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#hub-div{
+  grid-row: 3;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+#delorean-reviews{
+  grid-row: 1;
+}
+
+.upgrades-img{
+  width: 65px;
+  height: 65px;
+}
+
+.upgrade-div-img{
+  background-color: rgb(38, 194, 194);
+  margin: 10px;
+}
+
+
+/***********FOOTER ******************/
+
+#copyright{
+  text-align: left;
+  margin: 20px ;
+}
+
+
+/************** DIFFERENT SCREEN SIZES ****************/
+
+@media (min-width: 1024px) {
+  
+  #delorean-specs{
+    /* display: grid; */
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows : none;
+  }
+
+  #delorean-upgrades{
+    grid-column: 1;
+    grid-row: 1;
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr; */
+  }
+
+  #delorean-reviews{
+    grid-column: 2;
+  }
+
+  .p-features{
+    font-size: 12px;
+    color: rgb(38, 194, 194);
+  }
+}
