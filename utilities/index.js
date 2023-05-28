@@ -7,11 +7,11 @@ const Util = {}
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
   let list = '<ul id="ul-header">'
-  list += '<li class="li-header"><a href="/" title="Home page">Home</a></li>'
+  list += '<li class="li-header"><a id="nav-link" href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
     list += '<li class="li-header">'
     list +=
-      '<a href="/inv/type/' +
+      '<a id="nav-link" href="/inv/type/' +
       row.classification_id +
       '" title="See our inventory of ' +
       row.classification_name +
@@ -56,5 +56,36 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+Util.buildCarDisplay  = async function(data) {
+  let display;
+
+  display = '<section id="singleCarView">'
+  display += '<div class="singleCarDetails">'
+  display += '<h5>' + data.inv_year + '</h5>'
+  display += '<img src=' + data.inv_image 
+  +' alt="Image of '+ data.inv_make + ' ' + data.inv_model 
+  +' on CSE Motors" />'
+  display += '</div>'
+  display += '<div class="singleCarDetails">'
+  let formattedprice =  Number(data.inv_price).toLocaleString("en-US")
+  display += '<p>Price: $' + formattedprice + '</p>'
+  let formattedMiles = data.inv_miles.toLocaleString("en-US")
+  display += '<p>Miles: ' + formattedMiles  + '</p>'
+  display += '<p>Color: ' + data.inv_color  + '</p>'
+  display += '</div>'
+  display += '</section>'
+  display += '<p> Description: ' + data.inv_description + '</p>'
+  return display
+}
+
 
 module.exports = Util

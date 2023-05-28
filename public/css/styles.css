@@ -56,13 +56,21 @@ li{
   list-style: none;
   justify-content : space-between;
   background-color: black;
+  padding: 0;
+  margin: 0;
 }
 
 .li-header{
   margin: 6px;
-  color: white;
-  background-color: black ;
+  color: black;
+  padding: 0;
+  margin: 0;  
 
+}
+
+#nav-link{
+  text-decoration: none;
+  color: white;
 }
 
 /******************* BODY ********************/
@@ -200,4 +208,16 @@ li{
     font-size: 12px;
     color: rgb(38, 194, 194);
   }
+}
+
+/***************** Single Car View ***************/
+
+#singleCarView{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.singleCarDetails{
+  padding:20px;
 }
