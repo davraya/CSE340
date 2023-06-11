@@ -221,3 +221,13 @@ li{
 .singleCarDetails{
   padding:20px;
 }
+
+/***************** Register View ***************/
+
+input:required:invalid, input:focus:invalid {
+  border-color: red;
+ }
+
+ input:required:valid {
+  border-color: green;
+  }

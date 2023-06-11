@@ -87,5 +87,50 @@ Util.buildCarDisplay  = async function(data) {
   return display
 }
 
+Util.buildInventorynForm = async function(data){
+  
+
+  classification = data.rows
+  let form = ""
+  form += '<h1> Form </h1>'
+  form += '<form action="addInventory" method="post">'
+
+  form += '<select name="classification_id" id="dropdown">'
+  classification.forEach(element => form += `<option value="${element.classification_id}">${element.classification_name}</option>`)
+  form += '</select><br><br>'
+
+  form += '<label for="name">Make:</label>'
+  form += '<input type="text" name="inv_make" id="inv_make" required><br><br>'
+
+  form += '<label for="name">Model:</label>'
+  form += '<input type="text" name="inv_model" id="inv_model" required><br><br>'
+
+  form += '<label for="name">Year:</label>'
+  form += '<input type="text" name="inv_year" id="inv_year" required><br><br>'
+
+  form += '<label for="name">Description:</label>'
+  form += '<input type="text" name="inv_description" id="inv_description" required><br><br>'
+
+  form += '<label for="name">Price:</label>'
+  form += '<input type="text" name="inv_price" id="inv_price" required><br><br>'
+
+  form += '<label for="name">Miles:</label>'
+  form += '<input type="text" name="inv_miles" id="inv_miles" required><br><br>'
+
+  form += '<label for="name">Color:</label>'
+  form += '<input type="text" name="inv_color" id="inv_color" required><br><br>'
+
+  form += '<label for="name">Image:</label>'
+  form += '<input type="text" name="inv_image" id="inv_image" required><br><br>'
+
+  form += '<input type="submit" value="Add">'
+
+  form += '</form>'
+
+
+
+  return form
+}
+
 
 module.exports = Util
