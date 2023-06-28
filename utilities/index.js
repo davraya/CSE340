@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 const invModel = require("../models/inventory-model")
 const Util = {}
 
@@ -88,7 +90,6 @@ Util.buildCarDisplay  = async function(data) {
 }
 
 Util.buildInventorynForm = async function(data){
-  
 
   classification = data.rows
   let form = ""
@@ -132,5 +133,108 @@ Util.buildInventorynForm = async function(data){
   return form
 }
 
+Util.buildEditForm = async function (data) {
+  classification = data.rows
+  let form = ""
+  form += '<h1> Form </h1>'
+  form += '<form action="/inv/update" method="post">'
 
+  form += '<select name="classification_id" id="dropdown">'
+  classification.forEach(element => form += `<option value="${element.classification_id}">${element.classification_name}</option>`)
+  form += '</select><br><br>'
+
+  form += '<label for="name">Make:</label>'
+  form += '<input type="text" name="inv_make" id="inv_make" required><br><br>'
+
+  form += '<label for="name">Model:</label>'
+  form += '<input type="text" name="inv_model" id="inv_model" required><br><br>'
+
+  form += '<label for="name">Year:</label>'
+  form += '<input type="text" name="inv_year" id="inv_year" required><br><br>'
+
+  form += '<label for="name">Description:</label>'
+  form += '<input type="text" name="inv_description" id="inv_description" required><br><br>'
+
+  form += '<label for="name">Price:</label>'
+  form += '<input type="text" name="inv_price" id="inv_price" required><br><br>'
+
+  form += '<label for="name">Miles:</label>'
+  form += '<input type="text" name="inv_miles" id="inv_miles" required><br><br>'
+
+  form += '<label for="name">Color:</label>'
+  form += '<input type="text" name="inv_color" id="inv_color" required><br><br>'
+
+  form += '<label for="name">Image:</label>'
+  form += '<input type="text" name="inv_image" id="inv_image" required><br><br>'
+
+  form += '<input type="submit" value="Add">'
+
+  form += '</form>'
+
+
+
+  return form
+}
+
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+   jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+     if (err) {
+      req.flash("Please log in")
+      res.clearCookie("jwt")
+      return res.redirect("/account/login")
+     }
+     res.locals.accountData = accountData
+     res.locals.loggedin = 1
+     next()
+    })
+  } else {
+   next()
+  }
+ }
+
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
+
+
+ Util.buildClassificationList = async function(classifications){
+  
+  let classificationList = ''
+  classificationList += '<select name="classification_id" id="classificationList">'
+  classifications.rows.forEach(element => classificationList += `<option value="${element.classification_id}">${element.classification_name}</option>`)
+  classificationList += '</select><br><br>'
+
+  return classificationList
+ }
+
+
+ Util.verifyAccess = async function(req, res, next){
+
+  if(res.locals.accountData){
+    if(res.locals.accountData.account_type == 'Employee' || res.locals.accountData.account_type == 'Admin'){
+      next()
+    }
+    else{
+    req.flash('notice', 'Not authorize for this page')
+    res.redirect('/')
+    }
+ }
+}
 module.exports = Util

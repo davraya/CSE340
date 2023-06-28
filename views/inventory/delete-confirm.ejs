@@ -1,0 +1,24 @@
+<h1><%- title  %></h1>
+
+<form action="/inv/delete" method="post" id="updateForm">    
+    <label for="inv_make">Make:</label>
+    <input type="text" name="inv_make" value="<%= inv_make %>" readonly><br>
+    
+    <label for="inv_model">Model:</label>
+    <input type="text" name="inv_model" value="<%= inv_model %>" readonly><br>
+    
+    <label for="inv_year">Year:</label>
+    <input type="text" name="inv_year" value="<%= inv_year %>" readonly><br>
+    
+    <label for="inv_price">Price:</label>
+    <input type="text" name="inv_price" value="<%= inv_price %>" readonly><br>
+    
+    
+    
+    <button type="submit" >Delete</button>
+    <p>Confirm Deletion - The delete is permanent.</p>
+    <input type="hidden" name="inv_id"
+<% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+<% } %>>
+
+

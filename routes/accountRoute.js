@@ -15,13 +15,22 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
   )
 
-// Process the login attempt
+// Process the login request
 router.post(
   "/login",
-  (req, res) => {
-    res.status(200).send('login process')
-  }
+  // regValidate.loginRules(),
+  // regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 )
 
+
+router.get('/', utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
+
+
+router.get('/logout', utilities.handleErrors(accountController.logout))
+
+router.get('/update', utilities.handleErrors(accountController.buildUpdate))
+router.post('/update', utilities.handleErrors(accountController.updateAccount))
+router.post('/password-update', utilities.handleErrors(accountController.updatePassword))
 
 module.exports = router

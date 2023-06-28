@@ -15,19 +15,31 @@ router.get("/detail/:inv_id", utilities.handleErrors(invController.buildByInvId)
 
 router.get('/', utilities.handleErrors(invController.buildManagement))
 
-router.get('/addClassification', utilities.handleErrors(invController.buildAddClassification))
+router.get('/addClassification', utilities.verifyAccess, utilities.handleErrors(invController.buildAddClassification))
+
 router.post('/addClassification', 
 invValidate.classificationRules(),
 invValidate.checkClassificationData,
 utilities.handleErrors(invController.addClassification)
 )
 
-router.get('/addInventory', invController.buildAddInventory)
+router.get('/addInventory', utilities.verifyAccess, invController.buildAddInventory)
 router.post('/addInventory', 
 // invValidate.InventoryRules(),
 // invValidate.checkInventoryData,
 utilities.handleErrors(invController.addInventory))
 
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
+router.get('/edit/:inventoryId', utilities.handleErrors(invController.buildEditInventory))
+
+router.post("/update/", 
+// invValidate.InventoryRules(),
+// invValidate.checkUpdateData,
+utilities.handleErrors(invController.updateInventory))
+
+router.get('/delete/:inventoryId', utilities.handleErrors(invController.buildDeleteInventory))
+
+router.post('/delete/', utilities.handleErrors(invController.deleteInventory))
 
 module.exports = router;
