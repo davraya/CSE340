@@ -2,6 +2,7 @@ utilities = require('../utilities/index')
 accountModel = require('../models/account-model')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const messageModel = require('../models/messages-model')
 require("dotenv").config()
 
 
@@ -112,12 +113,15 @@ async function accountLogin(req, res) {
 
 
  /* ****************************************
-*  Deliver registration view
+*  Deliver accoun view
 * *************************************** */
 async function buildAccount(req, res, next) {
   const account_firstname = res.locals.accountData.account_firstname
   const account_type = res.locals.accountData.account_type
 
+  const receivedMessages = await messageModel.getReceivedMessagesList(res.locals.accountData.account_id)
+  const receivedMessagesCount = receivedMessages.length
+  console.log(`Message Count: ${receivedMessagesCount}`)
   let nav = await utilities.getNav()
   res.render("account/account", {
     title: "Account Management",
@@ -125,7 +129,8 @@ async function buildAccount(req, res, next) {
     errors: null,
     loggedIn: res.locals.loggedin,
     account_firstname,
-    account_type
+    account_type,
+    messageCount : receivedMessagesCount
   })
 }
 
@@ -170,7 +175,6 @@ async function updateAccount(req, res, next){
     account_id
   )
 
-  console.log(account_firstname,account_lastname,account_email);
   delete res.locals.accountData.account_firstname
   delete res.locals.accountData.account_lastname
   delete res.locals.accountData.account_email

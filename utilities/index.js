@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const invModel = require("../models/inventory-model")
+const accountModel = require('../models/account-model')
 const Util = {}
 
 /* ************************
@@ -237,4 +238,102 @@ Util.checkLogin = (req, res, next) => {
     }
  }
 }
+
+
+Util.buildMessageForm = async function (data, sender_id){
+  let message_from = sender_id
+
+  let form = ''
+
+  form += '<form action="/messages/new-message" method="post">'
+
+  form += '<label for="to">To:</label>'
+  form += '<select name="message_to" id="dropdown">'
+  data.forEach(element => form += `<option value="${element.account_id}">${element.account_firstname} ${ element.account_lastname}</option>`)
+  form += '</select><br><br>'
+
+  form += '<label for="subject">Subject:</label>'
+  form += '<input type="text" id="subject" name="message_subject" required><br><br>'
+
+  form += '<label for="message">Message:</label>'
+  form += '<textarea id="message" name="message_body" rows="5" cols="40" required></textarea><br><br>'
+
+  form += `<input type="text" id="subject" name="message_from" value="${message_from}" hidden required>`
+
+  form += '<input type="submit" value="Send">'
+
+  form += '</form>'
+  return form
+}
+
+Util.replyMessageForm = async function (initialMessage){
+  let message_from = initialMessage.message_from
+  let message_to = initialMessage.message_to
+
+  let form = ''
+
+  form += '<form action="/messages/reply" method="post">'
+
+  form += '<label for="subject">Subject:</label>'
+  form += `<input type="text" id="subject" name="message_subject" value="RE : ${initialMessage.message_subject}" required readonly><br><br>`
+
+  form += '<label for="message">Message:</label>'
+  form += '<textarea id="message" name="message_body" rows="5" cols="40" required></textarea><br><br>'
+
+  form += `<input type="text" id="subject" name="message_from" value="${message_to}" hidden required>`
+  form += `<input type="text" id="subject" name="message_to" value="${message_from}" hidden required>`
+
+  form += '<input type="submit" value="Send">'
+
+  form += '</form>'
+  return form
+}
+
+Util.buidSentMessageList = async function (data){
+  list = '<h3>Sent Messages</h3>'
+
+  data.forEach((element) => {
+    const date = new Date(element.message_created)
+    list += `<p>Subject: ${element.message_subject} | ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} <a href="/messages/${element.message_id}">Open</a></p>`
+  });
+
+  return list
+}
+
+Util.buidReceivedMessageList = async function (data){
+  list = '<h3>Received Messages</h3>'
+  
+  data.forEach((element) => {
+    const date = new Date(element.message_created)
+    list += `<p>Subject: ${element.message_subject} | ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} | Read: ${element.message_read} <a href="/messages/${element.message_id}">Open</a></p>`
+  });
+
+  return list
+}
+
+Util.buildSingleMessage = async function(message_data, sender_data, receiver_data){
+
+  const date = new Date(message_data.message_created)
+  message = `<h3>Subject : ${message_data.message_subject}</h3>`
+  message += `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
+
+  message += `<p>From: ${sender_data.account_firstname} ${sender_data.account_lastname}</p>`
+  message += `<p>To: ${receiver_data.account_firstname} ${receiver_data.account_lastname}</p>`
+
+  message += `<p> Body: ${message_data.message_body}`
+
+  return message
+}
+
+Util.verifyAccesstoMessages = async function(req, res, next){
+
+  if(res.locals.loggedin){
+      next()
+    }
+    else{
+    req.flash('notice', 'Not authorize for this page')
+    res.redirect('/')
+    }
+ }
+
 module.exports = Util

@@ -1,0 +1,29 @@
+<h1><%- title  %></h1>
+
+<%- message %>
+
+<% if (!archived) { %>
+    <form method="POST" action="/messages/archive/<%= msg_id %>">
+        <button type="submit">Archive Message</button>
+    </form>
+    <br>
+  <% } %>
+
+<% if (!read) { %>
+<form method="POST" action="/messages/mark-read/<%= msg_id %>">
+    <button type="submit">Mark as read</button>
+</form>
+<br>
+<% } %>
+
+
+<% if (reply) { %>
+    <form method="GET" action="/messages/reply/<%= msg_id %>">
+        <button type="submit">Reply</button>
+    </form>
+    <br>
+    <% } %>
+
+<form method="POST" action="/messages/delete/<%= msg_id %>">
+    <button type="submit">Delete Message</button>
+</form>

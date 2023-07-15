@@ -64,6 +64,7 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", require("./routes/inventoryRoute"))
 // Account routes
 app.use('/account', require('./routes/accountRoute'))
+app.use('/messages', require('./routes/messagesRoute'))
 // error route
 app.use(require('./routes/errorRoutes'))
 // File Not Found Route - must be last route in list
